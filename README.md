@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/m4rcu5nl/docker-pdns-recursor-alpine.svg?branch=master)](https://travis-ci.org/m4rcu5nl/docker-pdns-recursor-alpine) [![GitHub issues](https://img.shields.io/github/issues/m4rcu5nl/docker-pdns-recursor-alpine.svg)](https://github.com/m4rcu5nl/docker-pdns-recursor-alpine/issues)  
 docker-pdns-recursor-alpine
 ===========================
 Docker image for PowerDNS Recursor 4.0.4 on Alpine Linux 3.5  
