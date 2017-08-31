@@ -1,0 +1,9 @@
+language: python
+python:
+  - 2.7
+services:
+  - docker
+install:
+  - docker build -t pdns_recursor .
+script:
+  - docker images | grep -q pdns_recursor
