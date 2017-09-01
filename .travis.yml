@@ -7,7 +7,7 @@ before_install:
   - sudo apt -y install jq
 install:
   - docker build -t pdns_recursor .
-  - docker run -d -v $PWD/config:/config pdns_recursor:latest
+  - docker run -d --name pdns_recursor -v $PWD/config:/config pdns_recursor:latest
 script:
   - docker images | grep -q pdns_recursor
-  - test "$(dig @$(docker inspect mydns -f "{{json .NetworkSettings.Networks.bridge.IPAddress}}" | jq . -r) -t TXT localhost)" == "justsomestringtoreturnforautomatedtesting"
+  - test "$(dig @$(docker inspect pdns_recursor -f "{{json .NetworkSettings.Networks.bridge.IPAddress}}" | jq . -r) -t TXT localhost)" == "justsomestringtoreturnforautomatedtesting"
