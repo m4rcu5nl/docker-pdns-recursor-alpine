@@ -10,16 +10,21 @@ Build
 ```
 docker build -t whatchamacallit .
 ```
-Run
+Run examples
 ---
+### Run a container locally
 ```
-docker run -d --name pdns_recursor whatchamacallit:latest
+docker run \
+        --detach \
+        --hostname container_hostname \
+        --name container_name \
+        --mount type=bind,src=/etc/localtime,dst=/etc/localtime,readonly=true \
+        --mount type=bind,src=/absolute/path/to/config,dst=/config,readonly=true \
+        whatchamacallit:latest
 ```
-The above spawns a detached container named *pdns_recursor*. It listens on it's own eth0 inet address on port 53. Once you get it's IP-address you can query it from your host system.  
-  
-Example:
+Let's asume the container can be reached on `172.17.0.4` we can query it with dig:  
 ```
-dig +tcp google.com @172.17.0.4
+dig +tcp @172.17.0.4 google.com
 
 ; <<>> DiG 9.10.3-P4-Ubuntu <<>> +tcp google.com @172.17.0.4
 ;; global options: +cmd
