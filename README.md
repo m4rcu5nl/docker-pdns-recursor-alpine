@@ -22,7 +22,7 @@ docker run \
         --mount type=bind,src=/absolute/path/to/config,dst=/config,readonly=true \
         whatchamacallit:latest
 ```
-Let's asume the container can be reached on `172.17.0.4` we can query it with dig:  
+Let's assume the container can be reached on `172.17.0.4` we can query it with dig:  
 ```
 dig +tcp @172.17.0.4 google.com
 
