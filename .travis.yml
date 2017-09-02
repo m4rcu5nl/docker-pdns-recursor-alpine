@@ -11,4 +11,5 @@ install:
 script:
   - docker images | grep -q pdns_recursor
   - docker ps | grep -q pdns_recursor
+  - bash tests/travis_dig.sh
 #  - test "$(dig @$(docker inspect pdns_recursor -f "{{json .NetworkSettings.Networks.bridge.IPAddress}}" | jq . -r) -t TXT localhost)" == "justsomestringtoreturnforautomatedtesting"

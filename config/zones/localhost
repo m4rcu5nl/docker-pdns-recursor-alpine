@@ -3,4 +3,5 @@ $ORIGIN localhost.
 @  1D  IN  NS    @
 @  1D  IN  A     127.0.0.1
 @  1D  IN  AAAA  ::1
-@  1D  IN  TXT   justsomestringtoreturnforautomatedtesting
+@  1D  IN  TXT   "justsomestringtoreturnforautomatedtesting"
+travis  1D  IN  TXT   "Travis CI"
