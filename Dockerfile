@@ -12,6 +12,10 @@ RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/v3.5/community" >> /et
     # Create directory for custom configuration files
     mkdir -p /data/recursor-conf.d && \
 
+    # Give ownership of default config file to recursor:recursor
+    # This enables runtime zone/config reloading with rec_control
+    chown recursor: /etc/pdns/recursor.conf && \
+
     # Prevent the recursor from running as a daemon
     sed -i "s|daemon=yes|daemon=no|g" /etc/pdns/recursor.conf && \
 
