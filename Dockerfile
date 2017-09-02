@@ -12,14 +12,20 @@ RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/v3.5/community" >> /et
     # Create directory for custom configuration files
     mkdir /config && \
 
-    # Configure include-dir for custom config files
-    sed -i "s|# include-dir=|include-dir=/config|g" /etc/pdns/recursor.conf &&\
-
     # Prevent the recursor from running as a daemon
-    sed -i "s|daemon=yes|daemon=no|g" /etc/pdns/recursor.conf
+    sed -i "s|daemon=yes|daemon=no|g" /etc/pdns/recursor.conf && \
+
+    # Make the recursor listen on local port 53
+    sed -i "s|local-port=5353|local-port=53|g" /etc/pdns/recursor.conf && \
+
+    # Make the recursor listen on 0.0.0.0 inside it's container
+    sed -i "s|# local-address=127.0.0.1|local-address=0.0.0.0|g" /etc/pdns/recursor.conf && \
+
+    # Configure include-dir for custom config files
+    sed -i "s|# include-dir=|include-dir=/config|g" /etc/pdns/recursor.conf
 
 # Make config dir a volume
 VOLUME /config
 
-# Run pdns_recursor in foreground and listen on container's eth0 inet addr
-ENTRYPOINT /usr/sbin/pdns_recursor --local-address=`awk 'END{print $1}' /etc/hosts`:53
+# Run pdns_recursor
+ENTRYPOINT ["/usr/sbin/pdns_recursor"]
