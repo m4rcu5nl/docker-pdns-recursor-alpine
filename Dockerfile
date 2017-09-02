@@ -10,7 +10,7 @@ RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/v3.5/community" >> /et
     rm -rf /var/cache/apk/* && \
 
     # Create directory for custom configuration files
-    mkdir /config && \
+    mkdir -p /data/recursor-conf.d && \
 
     # Prevent the recursor from running as a daemon
     sed -i "s|daemon=yes|daemon=no|g" /etc/pdns/recursor.conf && \
@@ -22,10 +22,10 @@ RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/v3.5/community" >> /et
     sed -i "s|# local-address=127.0.0.1|local-address=0.0.0.0|g" /etc/pdns/recursor.conf && \
 
     # Configure include-dir for custom config files
-    sed -i "s|# include-dir=|include-dir=/config|g" /etc/pdns/recursor.conf
+    sed -i "s|# include-dir=|include-dir=/data/recursor-conf.d|g" /etc/pdns/recursor.conf
 
-# Make config dir a volume
-VOLUME /config
+# Make data dir a volume
+VOLUME /data
 
 # Run pdns_recursor
 ENTRYPOINT ["/usr/sbin/pdns_recursor"]
