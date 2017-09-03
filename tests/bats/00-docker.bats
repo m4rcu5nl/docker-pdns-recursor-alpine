@@ -5,7 +5,6 @@ setup(){
 }
 
 @test "Docker image is present" {
-    #DOCKER_IMAGE_NAME="m4rcu5/pdns-recursor"
     result="$(docker images | grep -c "${DOCKER_IMAGE_NAME}")"
     [ "$result" -ge "1" ]
 }
@@ -18,4 +17,9 @@ setup(){
 @test "Docker container is running" {
     result="$(docker ps | grep -c "${DOCKER_CONTAINER_NAME}")"
     [ "$result" -eq "1" ]
+}
+
+@test "Data mount is available to container" {
+    result="$(docker inspect ${DOCKER_CONTAINER_NAME} -f "{{json .Mounts}}" | jq .[].Destination | grep 'data')"
+    [ "$result" = '"/data"' ]
 }
