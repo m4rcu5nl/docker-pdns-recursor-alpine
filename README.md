@@ -2,25 +2,25 @@
 docker-pdns-recursor-alpine
 ===========================
 Docker image for PowerDNS Recursor 4.0.4 on Alpine Linux 3.5  
+Image size: 16.8MB  
   
-**WARNING:** Very early build
-
 Build
 -----
 ```
-docker build -t whatchamacallit .
+docker build -t pdns-recursor .
 ```
 Run examples
 ---
 ### Run a container locally
+Personally, I like to keep config files of my containers in /opt/containername on the host. So to run the recursor locally I run:
 ```
 docker run \
         --detach \
-        --hostname container_hostname \
-        --name container_name \
+        --hostname resolver.local \
+        --name pdns-recursor \
         --mount type=bind,src=/etc/localtime,dst=/etc/localtime,readonly=true \
-        --mount type=bind,src=/absolute/path/to/config,dst=/config,readonly=true \
-        whatchamacallit:latest
+        --mount type=bind,src=/opt/pdns-recursor,dst=/data,readonly=true \
+        pdns-recursor:latest
 ```
 Let's assume the container can be reached on `172.17.0.4` we can query it with dig:  
 ```
