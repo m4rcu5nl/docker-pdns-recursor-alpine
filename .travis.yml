@@ -5,7 +5,7 @@ services:
   - docker
 install:
   - docker build -t pdns_recursor .
-  - docker run -d --name pdns_recursor -v $PWD/config:/config pdns_recursor:latest
+  - docker run -d --name pdns_recursor -v $PWD/data:/data pdns_recursor:latest
 script:
   - docker images | grep -q pdns_recursor
   - docker ps | grep -q pdns_recursor
