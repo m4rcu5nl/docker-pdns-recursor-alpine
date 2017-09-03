@@ -11,7 +11,7 @@ install:
   - docker build -t pdns_recursor .
   - docker run -d --name pdns_recursor -v $PWD/data:/data pdns_recursor:latest
 script:
-  - bats test/bats/
+  - /usr/bin/bats tests/bats/
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_EVENT_TYPE" == "push" ]; then
     docker build -t pdns_recursor .;
