@@ -3,13 +3,13 @@ python:
   - 2.7
 services:
   - docker
+before_install:
+  - sudo apt-get -y install bats
 install:
   - docker build -t pdns_recursor .
   - docker run -d --name pdns_recursor -v $PWD/data:/data pdns_recursor:latest
 script:
-  - docker images | grep -q pdns_recursor
-  - docker ps | grep -q pdns_recursor
-  - bash tests/travis_dig.sh
+  - bats test/bats/
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_EVENT_TYPE" == "push" ]; then
     docker build -t pdns_recursor .;
