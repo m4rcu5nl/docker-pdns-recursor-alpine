@@ -10,3 +10,22 @@ script:
   - docker images | grep -q pdns_recursor
   - docker ps | grep -q pdns_recursor
   - bash tests/travis_dig.sh
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_EVENT_TYPE" == "push" ]; then
+    docker build -t pdns_recursor .;
+    docker tag pdns_recursor:latest m4rcu5/pdns-recursor:stable;
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push m4rcu5/pdns-recursor:stable;
+    fi
+  - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then
+    docker build -t pdns_recursor .;
+    docker tag pdns_recursor:latest m4rcu5/pdns-recursor:latest;
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push m4rcu5/pdns-recursor:latest;
+    fi
+  - if [ "$TRAVIS_BRANCH" == "develop" ] && [ "$TRAVIS_EVENT_TYPE" != "pull_request" ]; then
+    docker build -t pdns_recursor .;
+    docker tag pdns_recursor:latest m4rcu5/pdns-recursor:staging;
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push m4rcu5/pdns-recursor:staging;
+    fi
