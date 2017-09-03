@@ -4,7 +4,9 @@ python:
 services:
   - docker
 before_install:
-  - sudo apt-get -y install bats
+  - sudo add-apt-repository -y ppa:duggan/bats
+  - sudo apt-get -qq update
+  - sudo apt-get install -y bats
 install:
   - docker build -t pdns_recursor .
   - docker run -d --name pdns_recursor -v $PWD/data:/data pdns_recursor:latest
