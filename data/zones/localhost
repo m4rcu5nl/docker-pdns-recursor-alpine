@@ -3,4 +3,4 @@ $ORIGIN localhost.
 @       1D  IN  NS    @
 @       1D  IN  A     127.0.0.1
 @       1D  IN  AAAA  ::1
-travis  1D  IN  TXT   "Travis CI"
+test    1D  IN  TXT   "Result"
