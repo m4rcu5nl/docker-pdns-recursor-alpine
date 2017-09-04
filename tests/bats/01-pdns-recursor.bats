@@ -20,3 +20,9 @@ setup(){
     result="$(dig +tcp @${PDNS_HOST} AXFR www.m4rcu5.nl | grep -c '; Transfer failed.')"
     [ "$result" -eq 1 ]
 }
+
+@test "Reload authorative and forwarded zones" {
+    run docker exec ${DOCKER_CONTAINER_NAME} rec_control reload-zones
+    [ "$status" -eq 0 ]
+    [ "$output" = "ok" ]
+}
