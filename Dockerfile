@@ -1,10 +1,10 @@
-FROM alpine:3.5
+FROM alpine:3.6
 LABEL maintainer="Marcus Meurs <mail@m4rcu5.nl>" \
-      version="0.1.0"
+      version="0.1.1"
 
 # Add community repo and install packages
-RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/v3.5/community" >> /etc/apk/repositories && \
-    echo "@main http://dl-cdn.alpinelinux.org/alpine/v3.5/main" >> /etc/apk/repositories && \
+RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/v3.6/community" >> /etc/apk/repositories && \
+    echo "@main http://dl-cdn.alpinelinux.org/alpine/v3.6/main" >> /etc/apk/repositories && \
     apk add -U --no-cache \
     pdns-recursor@community && \
     rm -rf /var/cache/apk/* && \
