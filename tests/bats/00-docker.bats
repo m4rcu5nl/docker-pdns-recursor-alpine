@@ -23,3 +23,9 @@ setup(){
     result="$(docker inspect ${DOCKER_CONTAINER_NAME} -f "{{json .Mounts}}" | jq .[].Destination | grep 'data')"
     [ "$result" = '"/data"' ]
 }
+
+# https://hub.docker.com/r/library/alpine/tags/ shows vulnerability for 3.5 image
+@test "Alpine linux version is version 3.6.x" {
+    result="$(docker exec -ti ${DOCKER_CONTAINER_NAME} cat /etc/alpine-release | cut -d '.' -f 1,2)"
+    [ "$result" = "3.6" ]
+}
