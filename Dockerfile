@@ -17,31 +17,19 @@ RUN sed -i "s|daemon=yes|daemon=no|g" /etc/pdns/recursor.conf && \
     sed -i "s|# include-dir=|include-dir=/data/recursor-conf.d|g" /etc/pdns/recursor.conf
 
 # Give ownership of default config file to recursor:recursor
-# This enables runtime zone/config reloading with rec_control
+# This enables runtime zone/script reloading with rec_control
 RUN chown recursor: /etc/pdns/recursor.conf
 
-# Create directories for custom configuration files and authoritative zone files
-RUN mkdir -p /data/recursor-conf.d /data/zones
+# Make sure the include-dir always exists
+RUN mkdir -p /data/recursor-conf.d
 
-# Deploy authoritative zone file for localhost
-COPY data/zones/localhost /data/zones/
-
-# Deploy config file totake authority over localhost zone
-COPY data/recursor-conf.d/auth-zones.conf /data/recursor-conf.d/
-
-# Make data dir a volume
+# Make /data a volume
 VOLUME /data
 
-# Heath check
-#
-# Note: I'm not testing actual recursion to determine the container health since this can fail due to
-# configuration choices made on the host running the container.
-#
-# For this check to succeed the recursor needs authority over the localhost zone and the zone
-# needs to have a TXT record for test.localhost with a value of "Result"
-# Make sure you keep meeting these requirements when you mount custom config files in your container
-# or provide a custom health check in your `docker run` command
-HEALTHCHECK --interval=5s --timeout=3s CMD drill TXT test.localhost @localhost | grep -q -s "Result"
+# Health check
+HEALTHCHECK --interval=5s --timeout=3s CMD \
+    drill health.localhost.tld @localhost | grep -q 'rcode: NXDOMAIN' && \
+    drill localhost @localhost | grep -q 'rcode: NOERROR'
 
 # Run pdns_recursor
 ENTRYPOINT ["/usr/sbin/pdns_recursor"]
