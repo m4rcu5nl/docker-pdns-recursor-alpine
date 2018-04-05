@@ -16,7 +16,7 @@ sudo docker image pull m4rcu5/pdns-recursor:latest
 - - -
 ## Using the image
 
-#### Default config
+#### Default configuration
 The recursor will work out of the box as long as you query it from a private network. To create a container without any additional configuration simply run:
 ```bash
 docker container run \
@@ -49,3 +49,36 @@ google.com.     300 IN  A   216.58.211.110
 ;; WHEN: Thu Aug 31 23:35:44 CEST 2017
 ;; MSG SIZE  rcvd: 55
 ```
+
+#### Custom configuration
+It is possible to overwrite default settings by defining them in custom `.conf` files in `/data/recursor-conf.d/`. Consider the following setup on the container host:  
+
+```
+/opt
+└── pdns-recursor
+    └── data
+        ├── recursor-conf.d
+        │   └── auth-zones.conf
+        ├── scripts
+        └── zones
+            └── localhost
+```
+Now this local folder can be mounted as a volume inside the container:  
+```bash
+docker container run \
+    --detach \
+    --hostname resolver.local \
+    --name pdns-recursor \
+    --mount type=bind,src=/etc/localtime,dst=/etc/localtime,readonly=true \
+    --mount type=bind,src=/opt/pdns-recursor/data,dst=/data,readonly=true \
+    m4rcu5/pdns-recursor:latest
+```
+At this point everything is still pretty default. Let's say we want the recursor to validate DNSSEC queries. This can be accomplished by creating a `.conf` file for it and restarting the container:
+```bash
+# Create the config file
+echo 'dnssec=validate' > /opt/pdns-recursor/data/recursor-conf.d/dnssec.conf
+
+# Restart the container
+docker container restart pdns-recursor
+```
+A complete list of settings for the recursor can be found on [https://doc.powerdns.com/md/recursor/settings/](https://doc.powerdns.com/md/recursor/settings/)
