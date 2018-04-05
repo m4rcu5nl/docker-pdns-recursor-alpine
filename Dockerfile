@@ -1,6 +1,6 @@
 FROM alpine:3.7
 LABEL maintainer="Marcus Meurs <mail@m4rcu5.nl>" \
-      version="0.1.3"
+      version="1.0.0"
 
 # Add community repo and install packages
 RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/v3.7/community" >> /etc/apk/repositories && \
