@@ -1,28 +1,32 @@
-[![Build Status](https://travis-ci.org/m4rcu5nl/docker-pdns-recursor-alpine.svg?branch=master)](https://travis-ci.org/m4rcu5nl/docker-pdns-recursor-alpine) [![GitHub issues](https://img.shields.io/github/issues/m4rcu5nl/docker-pdns-recursor-alpine.svg)](https://github.com/m4rcu5nl/docker-pdns-recursor-alpine/issues)  
-docker-pdns-recursor-alpine
-===========================
-Docker image for PowerDNS Recursor 4.0.4 on Alpine Linux 3.6  
-Image size: 16.8MB  
-  
-Build
------
+# Lightweight pdns-recursor Docker image
+[![Anchore Image Overview](https://anchore.io/service/badges/image/16fe22cef64d4c60f420e479aedea43bb5668bcb02302fea27391bf70057512c)](https://anchore.io/image/dockerhub/m4rcu5%2Fpdns-recursor%3Alatest) ![Docker Pulls](https://img.shields.io/docker/pulls/m4rcu5/pdns-recursor.svg) [![Build Status](https://travis-ci.org/m4rcu5nl/docker-pdns-recursor-alpine.svg?branch=master)](https://travis-ci.org/m4rcu5nl/docker-pdns-recursor-alpine) [![GitHub issues](https://img.shields.io/github/issues/m4rcu5nl/docker-pdns-recursor-alpine.svg)](https://github.com/m4rcu5nl/docker-pdns-recursor-alpine/issues)  
+
+Docker image for PowerDNS Recursor 4.0.7. Super lightweight thanks to the Alpine Linux 3.7 base image. Total image size for the current build is **17.2MB**
+- - -
+## Getting the image
+You can either clone this repo and build the image yourself or pull it from Docker Hub. The `:latest` tag on Docker Hub is a daily automated build.
+
+```bash
+# Example command to build an image
+sudo docker image build -t pdns-recursor .
+
+# Example command to pull an image
+sudo docker image pull m4rcu5/pdns-recursor:latest
 ```
-docker build -t pdns-recursor .
+- - -
+## Using the image
+
+#### Default config
+The recursor will work out of the box as long as you query it from a private network. To create a container without any additional configuration simply run:
+```bash
+docker container run \
+    --detach \
+    --hostname resolver.local \
+    --name pdns-recursor \
+    --mount type=bind,src=/etc/localtime,dst=/etc/localtime,readonly=true \
+    m4rcu5/pdns-recursor:latest
 ```
-Run examples
----
-### Run a container locally
-Personally, I like to keep config files of my containers in /opt/containername on the host. So to run the recursor locally I run:
-```
-docker run \
-        --detach \
-        --hostname resolver.local \
-        --name pdns-recursor \
-        --mount type=bind,src=/etc/localtime,dst=/etc/localtime,readonly=true \
-        --mount type=bind,src=/opt/pdns-recursor,dst=/data,readonly=true \
-        pdns-recursor:latest
-```
-Let's assume the container can be reached on `172.17.0.4` we can query it with dig:  
+Let's assume the container can be reached on `172.17.0.4`. You can now query it with dig for example:
 ```
 dig +tcp @172.17.0.4 google.com
 
