@@ -51,7 +51,7 @@ google.com.     300 IN  A   216.58.211.110
 ```
 
 #### Custom configuration
-It is possible to overwrite default settings by defining them in custom `.conf` files in `/data/recursor-conf.d/`. Consider the following setup on the container host:  
+It is possible to overwrite default settings by defining them in custom `.conf` files in `/data/recursor-conf.d/`. As an example this repo contains a zone file for the localhost zone and a configuration file to tell the recursor it has authority for that zone. Let's assume this repo has been cloned to `/opt` of the container host resulting in something similar to this:  
 
 ```
 /opt
@@ -73,7 +73,9 @@ docker container run \
     --mount type=bind,src=/opt/pdns-recursor/data,dst=/data,readonly=true \
     m4rcu5/pdns-recursor:latest
 ```
-At this point everything is still pretty default. Let's say we want the recursor to validate DNSSEC queries. This can be accomplished by creating a `.conf` file for it and restarting the container:
+Now the recursor will look in `/data/zones/localhost` whenever it receives a query for that zone.  
+
+Let's say we also want the recursor to validate DNSSEC queries. This can be accomplished by creating a `.conf` file for it and restarting the container:
 ```bash
 # Create the config file
 echo 'dnssec=validate' > /opt/pdns-recursor/data/recursor-conf.d/dnssec.conf
