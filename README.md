@@ -1,7 +1,7 @@
 # Lightweight pdns-recursor Docker image
-[![Anchore Image Overview](https://anchore.io/service/badges/image/16fe22cef64d4c60f420e479aedea43bb5668bcb02302fea27391bf70057512c)](https://anchore.io/image/dockerhub/m4rcu5%2Fpdns-recursor%3Alatest) ![Docker Pulls](https://img.shields.io/docker/pulls/m4rcu5/pdns-recursor.svg) [![Build Status](https://travis-ci.org/m4rcu5nl/docker-pdns-recursor-alpine.svg?branch=master)](https://travis-ci.org/m4rcu5nl/docker-pdns-recursor-alpine) [![GitHub issues](https://img.shields.io/github/issues/m4rcu5nl/docker-pdns-recursor-alpine.svg)](https://github.com/m4rcu5nl/docker-pdns-recursor-alpine/issues)  
+![Docker Pulls](https://img.shields.io/docker/pulls/m4rcu5/pdns-recursor.svg) [![Build Status](https://travis-ci.org/m4rcu5nl/docker-pdns-recursor-alpine.svg?branch=master)](https://travis-ci.org/m4rcu5nl/docker-pdns-recursor-alpine) [![GitHub issues](https://img.shields.io/github/issues/m4rcu5nl/docker-pdns-recursor-alpine.svg)](https://github.com/m4rcu5nl/docker-pdns-recursor-alpine/issues)  
 
-Docker image for PowerDNS Recursor 4.1.3. Super lightweight thanks to the Alpine Linux 3.8 base image. Total image size for the current build is **27.2MB**
+Docker image for PowerDNS Recursor 4.1.x. Super lightweight thanks to the Alpine Linux 3.8 base image. Total image size for the current build is **27.2MB**
 - - -
 ## Getting the image
 You can either clone this repo and build the image yourself or pull it from Docker Hub. The `:latest` tag on Docker Hub is a daily automated build.
